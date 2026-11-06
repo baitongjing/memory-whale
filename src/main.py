@@ -4,7 +4,7 @@
 # 你若把它改成网络服务，就必须同样开源 —— 这是 AGPL 的传染性。
 #
 # 远看大肥鱼，近看肥鱼大。
-"""m3_v0 —— 三层记忆插件
+"""memory_whale —— 三层记忆插件
 
 代码与本子分开：源码不写死绝对路径与私人信息。
 数据目录：config.json 的 data_dir → 缺省 插件目录/data/
@@ -173,7 +173,7 @@ def _local_sync(prompt: str, timeout: int = 300) -> str:
         r = json.loads(urllib.request.urlopen(req, timeout=timeout).read().decode())
         return (r.get("message", {}).get("content") or "").strip()
     except Exception as e:
-        logger.warning(f"[m3_v0] 本地小千问没应答: {e}")
+        logger.warning(f"[memory_whale] 本地小千问没应答: {e}")
         return ""
 
 
@@ -473,7 +473,7 @@ def _merge_groups_once(tgt: Path) -> None:
                     pass
     tj.write_text(json.dumps(tn, ensure_ascii=False, indent=1), encoding="utf-8")
     flag.write_text(time.strftime("%Y-%m-%d %H:%M:%S") + " 并进来 %d 条\n" % moved, encoding="utf-8")
-    logger.info("[m3_v0] 群合并完成，并进 %d 条" % moved)
+    logger.info("[memory_whale] 群合并完成，并进 %d 条" % moved)
 
 
 def touch(umo, items) -> None:
@@ -598,7 +598,7 @@ def vault_dir(umo) -> Path:
         try:
             _merge_groups_once(p)
         except Exception as e:
-            logger.warning(f"[m3_v0] 群合并迁移跳过: {e}")
+            logger.warning(f"[memory_whale] 群合并迁移跳过: {e}")
         return p
     safe = "".join(c if c.isalnum() or c in "-_" else "_" for c in s)[-60:]
     p = out_dir() / "vault" / safe
@@ -790,7 +790,7 @@ def write_idx(umo, n=None) -> None:
     try:
         (vault_dir(umo) / "索引.md").write_text("\n".join(md), encoding="utf-8")
     except Exception as e:
-        logger.warning(f"[m3_v0] 索引写不出: {e}")
+        logger.warning(f"[memory_whale] 索引写不出: {e}")
 
 
 def folk_head(umo) -> str:
@@ -997,7 +997,7 @@ def ingest(umo, src: Path) -> dict:
         try:
             add_folk(umo, it["name"], it["text"].splitlines())
         except Exception as e:
-            logger.warning(f"[m3_v0] 导入人物失败 {it['name']}: {e}")
+            logger.warning(f"[memory_whale] 导入人物失败 {it['name']}: {e}")
     return {"file": keep.name, "items": len(items), "folk": len(folk),
             "rule": len(rules), "fact": len(facts), "raw": raw}
 
@@ -1051,7 +1051,7 @@ def do_backup(tag: str = "手动") -> str:
         f"因为什么：{tag}\n\n"
         "怎么原路返回：\n"
         "  在群里发 /m3_restore " + name + "\n"
-        "  或者手动：把这个文件夹里的 vault 整个盖回 plugins/astrbot_plugin_m3_v0/data/vault\n"
+        "  或者手动：把这个文件夹里的 vault 整个盖回 plugins/astrbot_plugin_memory_whale/data/vault\n"
         "  盖之前先把现在的 data/vault 改个名留着，别直接删。\n", encoding="utf-8")
     return name
 
@@ -1086,7 +1086,7 @@ def archive_add(umo, kind, old, new) -> None:
                             ensure_ascii=False) + "\n")
 
 
-@register("m3_v0", "三层记忆试验", "三层记忆试验：锚点注入、抓上下文、增量攒话、三段各压一遍", "0.1.1")
+@register("memory_whale", "白彤鲸", "记忆鲸：锚点注入、抓上下文、增量攒话、三段各压一遍", "0.1.0")
 class M3(Star):
     def __init__(self, context: Context, config=None):
         super().__init__(context)
@@ -1094,7 +1094,7 @@ class M3(Star):
             if config:
                 _PANEL.update({k: v for k, v in dict(config).items()})
         except Exception as e:
-            logger.warning(f"[m3_v0] 读面板配置失败: {e}")
+            logger.warning(f"[memory_whale] 读面板配置失败: {e}")
         self._last = {}
         self._auto = True   # 每轮现读，面板改了立刻见效（见 _maybe_auto）
         self._busy: set = set()
@@ -1114,7 +1114,7 @@ class M3(Star):
             self._busy.add(umo)
             asyncio.create_task(self._auto_compress(umo))
         except Exception as e:
-            logger.warning(f"[m3_v0] 判断自动压失败: {e}")
+            logger.warning(f"[memory_whale] 判断自动压失败: {e}")
 
     @filter.event_message_type(filter.EventMessageType.ALL)
     async def collect(self, event):
@@ -1135,7 +1135,7 @@ class M3(Star):
                 track(umo, [("user", txt, clean_nick(nick, sid))])
             self._maybe_auto(umo)
         except Exception as e:
-            logger.warning(f"[m3_v0] 收话失败: {e}")
+            logger.warning(f"[memory_whale] 收话失败: {e}")
 
     @filter.on_llm_request()
     async def grab(self, event, req: ProviderRequest):
@@ -1180,7 +1180,7 @@ class M3(Star):
             # 攒够了就丢后台压一次，不挡这一轮回复
             self._maybe_auto(umo)
         except Exception as e:
-            logger.warning(f"[m3_v0] grab 失败: {e}")
+            logger.warning(f"[memory_whale] grab 失败: {e}")
 
     @filter.command("m3_dump")
     async def dump(self, event):
@@ -1314,7 +1314,7 @@ class M3(Star):
                 p = await p
             return p
         except Exception as e:
-            logger.warning(f"[m3_v0] 取 provider 失败: {e}")
+            logger.warning(f"[memory_whale] 取 provider 失败: {e}")
             return None
 
     async def _ask(self, umo, prompt):
@@ -1341,7 +1341,7 @@ class M3(Star):
             )
             return tidy(getattr(r, "completion_text", "") or ""), "cloud"
         except Exception as e:
-            logger.warning(f"[m3_v0] 云端没接上: {e}")
+            logger.warning(f"[memory_whale] 云端没接上: {e}")
             return "", "fail"
 
     async def _compress(self, umo, text):
@@ -1373,10 +1373,10 @@ class M3(Star):
                 )
                 res["_ref"] = ref
         except Exception as e:
-            logger.warning(f"[m3_v0] 事件柜没落成: {e}")
-        logger.info("[m3_v0] 压完 " + " ".join(srcs))
+            logger.warning(f"[memory_whale] 事件柜没落成: {e}")
+        logger.info("[memory_whale] 压完 " + " ".join(srcs))
         if all(not v for v in res.values()):
-            logger.warning("[m3_v0] 三层全空，这次不写本子")
+            logger.warning("[memory_whale] 三层全空，这次不写本子")
             return None
         return res
 
@@ -1394,7 +1394,7 @@ class M3(Star):
         try:
             out, _ = await self._ask(umo, tpl)
         except Exception as e:
-            logger.warning(f"[m3_v0] 规矩合并不成: {e}")
+            logger.warning(f"[memory_whale] 规矩合并不成: {e}")
             return 0
         if not out:
             return 0
@@ -1404,11 +1404,11 @@ class M3(Star):
         ]
         lines = [x for x in lines if len(x) >= 2][:RULE_MERGE_TO]
         if len(lines) < 8:
-            logger.warning(f"[m3_v0] 合并结果太少({len(lines)})，先不动 // 主锚点")
+            logger.warning(f"[memory_whale] 合并结果太少({len(lines)})，先不动 // 主锚点")
             return 0
         n["rule"] = [{"d": time.strftime("%Y-%m-%d"), "t": x[:120]} for x in lines]
         save_note(umo, n)
-        logger.info(f"[m3_v0] 规矩自并 {len(lines)} 条")
+        logger.info(f"[memory_whale] 规矩自并 {len(lines)} 条")
         return len(lines)
 
     def _save(self, name, head, res):
@@ -1445,13 +1445,13 @@ class M3(Star):
             nf = add_items(umo, "fact", res.get("02_gist", "").splitlines(), ref=res.get("_ref", ""))
             nm = await self._merge_rules(umo)
             logger.info(
-                f"[m3_v0] 自动压完 {len(head)}条（留尾 {len(pend) - len(head)}）"
+                f"[memory_whale] 自动压完 {len(head)}条（留尾 {len(pend) - len(head)}）"
                 f" → 规矩+{nr} 事情+{nf}"
                 + (f" 合并{nm}" if nm else "")
                 + f" | {f.name}"
             )
         except Exception as e:
-            logger.warning(f"[m3_v0] 自动压失败: {e}")
+            logger.warning(f"[memory_whale] 自动压失败: {e}")
         finally:
             self._busy.discard(umo)
 
