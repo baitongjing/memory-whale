@@ -1,9 +1,9 @@
-name: astrbot_plugin_m3_v0
+name: astrbot_plugin_memory_whale
 desc: 三层记忆：抓本轮上下文，三段各压一遍（去重／事情大概／规矩），落成一份会自己长大的小账。
 help: 管理员指令 /m3_dump 看抓到多少条，/m3_go 跑一次三遍压。
-version: v0.1.1
+version: v0.1.0
 author: 白彤鲸
-repo: ""
-display_name: 三层记忆试验
-short_desc: 把聊天压成三层小账。
+repo: "https://github.com/baitongjing/memory-whale"
+display_name: 记忆鲸 memory-whale
+short_desc: 本子会旧，字会瘦，事不会丢。
 astrbot_version: ">=4.5.7"

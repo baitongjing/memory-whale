@@ -41,7 +41,7 @@ if (-not (Test-Path $PluginsDir)) {
 }
 
 # --- 2. 目标插件目录 ---
-$Target = Join-Path $PluginsDir "astrbot_plugin_m3_v0"
+$Target = Join-Path $PluginsDir "astrbot_plugin_memory_whale"
 
 if (Test-Path $Target) {
     Write-Host "[!] 已存在 $Target" -ForegroundColor Yellow
@@ -78,7 +78,7 @@ Write-Host ""
 Write-Host "[ok] 装好了：$Target" -ForegroundColor Green
 Write-Host ""
 Write-Host "接下来三步：" -ForegroundColor Cyan
-Write-Host "  1. 打开 AstrBot WebUI -> 插件管理，找到 astrbot_plugin_m3_v0，点【重载】"
+Write-Host "  1. 打开 AstrBot WebUI -> 插件管理，找到 astrbot_plugin_memory_whale，点【重载】"
 Write-Host "     （如果你的 AstrBot 版本没有重载按钮，重启 AstrBot 也一样）"
 Write-Host "  2. 想让它压话，二选一："
 Write-Host "     - 本地免费：装 ollama 并 ollama pull qwen2.5:7b"

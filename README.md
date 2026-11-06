@@ -79,7 +79,7 @@
 
 **二、放哪儿**
 
-整个文件夹丢进 `data/plugins/`，目录名 `astrbot_plugin_m3_v0`。
+整个文件夹丢进 `data/plugins/`，目录名 `astrbot_plugin_memory_whale`。
 
 **三、压话用什么模型**
 
