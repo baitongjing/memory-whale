@@ -228,4 +228,4 @@
 
 见 [LICENSE](./LICENSE)。AGPL-3.0。一句话：拿它干活、接活、赚钱都行；改完再往外发，改的地方得开着。藏着卖不行。
 
-法律条款是英文的，人话版在 [docs/许可证人话版.md](./docs/许可证人话版.md)。
+法律条款是英文的，人话版在 [docs/license-plain.md](./docs/license-plain.md)。
