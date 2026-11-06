@@ -1,0 +1,11 @@
+{
+  "data_dir": "",
+  "anchor": true,
+  "anchor_text": "（这里写一段给模型吃定心丸的话，每次对话开头注入）",
+  "nicks": {
+    "平台用户ID": "想显示的名字"
+  },
+  "auto": true,
+  "my_name": "",
+  "fp_salt": ""
+}

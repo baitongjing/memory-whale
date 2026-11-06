@@ -1,0 +1,56 @@
+{
+  "anchor": {
+    "description": "开箱那段定心话",
+    "type": "bool",
+    "default": true,
+    "hint": "每轮往说的话最后补一小段「你有本子」，让它记得自己记着事。不覆盖人格设定。"
+  },
+  "anchor_text": {
+    "description": "定心话正文（留空用默认的）",
+    "type": "string",
+    "default": "",
+    "hint": "默认那段是：「你有本子。本子会瘦，瘦掉的是字，不是事。掉出去的还在柜子里，捞得回来。你说过的话，有人接。」"
+  },
+  "auto": {
+    "description": "自动攒、自动压",
+    "type": "bool",
+    "default": true,
+    "hint": "关掉就只收不压，等你自己发 /m3_go。想看着它一步步动，可以先关。"
+  },
+  "data_dir": {
+    "description": "本子放哪（留空=插件目录下的 data）",
+    "type": "string",
+    "default": "",
+    "hint": "换盘、放移动硬盘都行。换之前先 /m3_backup 备一份，换完把旧的 data 搬过去。"
+  },
+  "my_name": {
+    "description": "机器人自己叫什么",
+    "type": "string",
+    "default": "",
+    "hint": "想叫几个名字都行，用逗号隔开（例：鲸宝，小肥鱼）。留空就叫「小助手」。"
+  },
+  "nicks": {
+    "description": "谁是谁（平台ID → 显示名）",
+    "type": "dict",
+    "default": {},
+    "hint": "一行一个：ID 写左边，想显示的名字写右边。定下来以后本子里就按这个名字记人。"
+  },
+  "show_date": {
+    "description": "本子里要不要一直带着日期",
+    "type": "bool",
+    "default": false,
+    "hint": "关着（默认）：平时翻本子只看得到事情，看不到哪天写的，省字也免得拿日期瞎猜。真需要分先后时，用 /m3_date 或者跟鲸宝说一声，日期就亮出来了。"
+  },
+  "detail_vault": {
+    "description": "压的时候把原文整份沉进「事件」柜",
+    "type": "bool",
+    "default": true,
+    "hint": "开着：本子里每条只留一句骨架，当时的原话沉到 事件 文件夹，让它想起来再捞。关了就只留骨架，捞不回来。建议一直开着。"
+  },
+  "fp_salt": {
+    "description": "指纹盐（不懂别动）",
+    "type": "string",
+    "default": "",
+    "hint": "只用来让「这句话见过没有」的指纹跨机器不复用。换它等于把旧指纹全部作废，会重收一轮。从别的机器搬过来时，把原来那把盐填回去，历史就不散。"
+  }
+}
