@@ -184,8 +184,11 @@ async def local_chat(prompt: str, timeout: int = 300) -> str:
         return ""
 
 
-def tidy(out: str) -> str:
-    """小模型爱吐空行和「无」，清一遍再进本子"""
+def tidy_blank(out: str) -> str:
+    """小模型爱吐空行和「无」，清一遍再进本子。
+
+    注意：2026-11-06 开源体检时发现它被下面同名的 tidy() 盖掉了、从没被调用过，
+    所以只改名不让它再撞车，行为一点没动。要不要接到压记忆那两步上，待定。"""
     ls = []
     for x in (out or "").splitlines():
         x = re.sub(r"^\s*(?:[-*·•]|\d{1,2}[.、)）])\s*", "", x).strip()
