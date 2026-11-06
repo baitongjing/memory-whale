@@ -3,7 +3,6 @@
 # Licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
 # 你若把它改成网络服务，就必须同样开源 —— 这是 AGPL 的传染性。
 #
-# 远看大肥鱼，近看肥鱼大。
 """memory_whale —— 三层记忆插件
 
 代码与本子分开：源码不写死绝对路径与私人信息。
@@ -1089,7 +1088,7 @@ def archive_add(umo, kind, old, new) -> None:
                             ensure_ascii=False) + "\n")
 
 
-@register("memory_whale", "白彤鲸", "记忆鲸：锚点注入、抓上下文、增量攒话、三段各压一遍", "0.1.0")
+@register("memory_whale", "memory_whale", "记忆鲸：锚点注入、抓上下文、增量攒话、三段各压一遍", "0.1.0")
 class M3(Star):
     def __init__(self, context: Context, config=None):
         super().__init__(context)
@@ -1603,7 +1602,7 @@ class M3(Star):
         """在本子里搜关键词。本子翻出来太长、或只记得某个名字/某个词时用这个。
 
         Args:
-            query(string): 关键词，两三个字最好，比如「大姨」「生日」「Steam」。
+            query(string): 关键词，两三个字最好，比如「生日」「散步」「Steam」。
             with_date(boolean): 平时不用传。查到两条对不上、要分辨哪条新哪条旧时才传 true。
         """
         n = load_note(event.unified_msg_origin)
