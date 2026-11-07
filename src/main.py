@@ -1,5 +1,5 @@
 # Copyright (c) 2026 baitongjing. Architecture: Anchordian.
-# Rebranding this plugin and selling it as your own service is prohibited.
+# 改名、收费都随你；但改过的代码必须同样以 AGPL-3.0 开源 —— 这条躲不掉。
 # Licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
 # 你若把它改成网络服务，就必须同样开源 —— 这是 AGPL 的传染性。
 #
@@ -123,12 +123,26 @@ LOCAL_MODEL = "qwen2.5:7b"   # 本地小千问；换 3b 更快但用词糙
 _PANEL = {}          # 面板（_conf_schema.json）里填过的值
 
 
+_CONF_CACHE = {}     # config.json 按 mtime 缓存：文件没变就不重读，一轮几十次调用不再反复解析
+
+
 def conf() -> dict:
-    """配置面板优先，面板没填的回落到 config.json"""
+    """配置面板优先，面板没填的回落到 config.json（按 mtime 缓存，手改文件也能自动生效）"""
+    mt = None
     try:
-        base = json.loads(CONF_FILE.read_text(encoding="utf-8-sig")) or {}
+        mt = CONF_FILE.stat().st_mtime_ns
     except Exception:
-        base = {}
+        pass
+    if mt is not None and _CONF_CACHE.get("mt") == mt:
+        base = dict(_CONF_CACHE.get("data") or {})
+    else:
+        try:
+            base = json.loads(CONF_FILE.read_text(encoding="utf-8-sig")) or {}
+        except Exception:
+            base = {}
+        if mt is not None:
+            _CONF_CACHE["mt"] = mt
+            _CONF_CACHE["data"] = dict(base)
     for k, v in _PANEL.items():
         if v not in (None, "", {}, []):
             base[k] = v
