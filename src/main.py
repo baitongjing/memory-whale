@@ -123,6 +123,14 @@ LOCAL_MODEL = "qwen2.5:7b"   # 本地小千问；换 3b 更快但用词糙
 _PANEL = {}          # 面板（_conf_schema.json）里填过的值
 
 
+def _admin_ok(event) -> bool:
+    """命令闸门：只有管理员能动本子。拿不到权限信息的一律按无权处理。"""
+    try:
+        return bool(event.is_admin())
+    except Exception:
+        return False
+
+
 _CONF_CACHE = {}     # config.json 按 mtime 缓存：文件没变就不重读，一轮几十次调用不再反复解析
 
 
@@ -1200,6 +1208,9 @@ class M3(Star):
 
     @filter.command("m3_dump")
     async def dump(self, event):
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         ctxs = self._last.get(event.unified_msg_origin, [])
         msgs = to_msgs(ctxs)
         t = "\n".join(f"{w or r}: {x}" for r, x, w in msgs)
@@ -1208,12 +1219,18 @@ class M3(Star):
     @filter.command("m3_backup")
     async def backup_cmd(self, event):
         """/m3_backup —— 整份存一份，出事能回到这一刻"""
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         name = await asyncio.to_thread(do_backup, "手动")
         yield event.plain_result(f"存好了：data/backup/{name}\n要回来说一句 /m3_restore {name}")
 
     @filter.command("m3_restore")
     async def restore_cmd(self, event):
         """/m3_restore 存档名 —— 回到某一份存档（不带名字就先列出来）"""
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         arg = (getattr(event, "message_str", "") or "").replace("/m3_restore", "").strip()
         bs = list_backups()
         if not arg:
@@ -1228,6 +1245,9 @@ class M3(Star):
     @filter.command("m3_import")
     async def import_cmd(self, event):
         """/m3_import 路径 —— 把老本子导进来（也可以直接丢进 vault/import/inbox/ 再发 /m3_import）"""
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         umo = event.unified_msg_origin
         box = vault_dir(umo) / "import" / "inbox"
         box.mkdir(parents=True, exist_ok=True)
@@ -1235,6 +1255,14 @@ class M3(Star):
         targets = []
         if arg:
             p = Path(arg)
+            try:
+                p = p.resolve()
+                box_r = box.resolve()
+            except Exception:
+                p, box_r = None, None
+            if p is None or not (p == box_r or box_r in p.parents):
+                yield event.plain_result("路径只能给 vault/import/inbox/ 里面的。别处的东西，先拷进这个 inbox 再来。")
+                return
             if p.is_dir():
                 targets = [x for x in sorted(p.rglob("*")) if x.is_file() and x.stat().st_size < 8_000_000]
             elif p.is_file():
@@ -1262,6 +1290,9 @@ class M3(Star):
     @filter.command("m3_wash")
     async def wash_cmd(self, event):
         """/m3_wash —— 把本子里带助手腔的旧条目按说明书重写一遍"""
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         umo = event.unified_msg_origin
         n = load_note(umo)
         me = my_names()
@@ -1300,6 +1331,9 @@ class M3(Star):
 
     @filter.command("m3_new")
     async def new_cmd(self, event):
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         st = load_state()
         u = st["umos"].get(str(event.unified_msg_origin), {})
         pend = u.get("pending") or []
@@ -1312,6 +1346,9 @@ class M3(Star):
 
     @filter.command("m3_clear")
     async def clear_cmd(self, event):
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         st = load_state()
         u = st["umos"].setdefault(str(event.unified_msg_origin), {"seen": [], "pending": []})
         u["pending"] = []
@@ -1320,6 +1357,9 @@ class M3(Star):
 
     @filter.command("m3_anchor")
     async def anchor_cmd(self, event):
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         a = anchor_text()
         yield event.plain_result("锚点：" + ("关着" if not a else "开着\n" + a.strip()))
 
@@ -1474,6 +1514,9 @@ class M3(Star):
     @filter.command("m3_go")
     async def go(self, event):
         """只压 pending 里的新话，压完清空——这就是增量"""
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         umo = event.unified_msg_origin
         st = load_state()
         u = st["umos"].get(str(umo), {})
@@ -1636,6 +1679,9 @@ class M3(Star):
     @filter.command("m3_date")
     async def date_cmd(self, event):
         """带日期的清单：平时本子不亮日期，要判新旧、看先后的时候用这条"""
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         umo = event.unified_msg_origin
         n = load_note(umo)
         rows = [f"[规] {i['d']} · {i['t']}" for i in n["rule"]]
@@ -1657,6 +1703,9 @@ class M3(Star):
     @filter.command("m3_all")
     async def go_all(self, event):
         """老路子：整段上下文压一遍（留着手动兜底）"""
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         umo = event.unified_msg_origin
         msgs = to_msgs(self._last.get(umo, []))
         t = "\n".join(f"{w or r}: {x}" for r, x, w in msgs)
@@ -1675,6 +1724,9 @@ class M3(Star):
     @filter.command("m3_task")
     async def task_cmd(self, event, arg: str = ""):
         """/m3_task 列 | 新 标题 | 记 标题 一句话 | 完 标题"""
+        if not _admin_ok(event):
+            yield event.plain_result("⚠️ 这条命令只给管理员用。")
+            return
         a = (arg or "").strip()
         if not a or a in ("列", "list"):
             rows = await asyncio.to_thread(task_list)
