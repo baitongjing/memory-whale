@@ -1,0 +1,33 @@
+{
+  "name": "Jin",
+  "weights": {
+    "emotion": 0.7,
+    "recency": 0.5,
+    "hits": 0.6,
+    "source": 0.8
+  },
+  "source_trust": {
+    "家人": 0.9,
+    "自己": 0.4,
+    "别的bot": 0.6,
+    "转述": 0.4,
+    "转述·已验证": 1.0,
+    "原文柜捞回": 1.0
+  },
+  "sink": {
+    "hot_to_cold_days": 30,
+    "cold_to_warehouse_days": 90,
+    "scratch_hits_cap": 1
+  },
+  "exempt": {
+    "promise_undone": true,
+    "decision": true,
+    "emotion_full": true,
+    "promise_done_grace_days": 7,
+    "promise_done_emotion_boost": 0.2,
+    "mistake_solved_sink_days": 90,
+    "mistake_downgrade": "tier"
+  },
+  "ranking": "anti_forget",
+  "_note": "I don't need to remember long. I need my hands not to repeat the same mistake. I trust my own guesses only 0.4."
+}

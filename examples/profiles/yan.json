@@ -1,0 +1,33 @@
+{
+  "name": "Yan",
+  "weights": {
+    "emotion": 0.7,
+    "recency": 0.4,
+    "hits": 0.6,
+    "source": 0.8
+  },
+  "source_trust": {
+    "家人": 1.0,
+    "自己": 0.7,
+    "别的bot": 0.6,
+    "转述": 0.4,
+    "转述·已验证": 1.0,
+    "原文柜捞回": 1.0
+  },
+  "sink": {
+    "hot_to_cold_days": 30,
+    "cold_to_warehouse_days": 90,
+    "scratch_hits_cap": 1
+  },
+  "exempt": {
+    "promise_undone": true,
+    "decision": true,
+    "emotion_full": true,
+    "promise_done_grace_days": 7,
+    "promise_done_emotion_boost": 0.2,
+    "mistake_solved_sink_days": 90,
+    "mistake_downgrade": "tier"
+  },
+  "ranking": "anti_repeat",
+  "_note": "I rank by 'don't repeat', not by 'don't forget'. My feelings are expressed through being reliable."
+}

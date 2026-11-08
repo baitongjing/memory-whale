@@ -23,3 +23,7 @@ config.json
 *.bak*
 backup/
 out/
+*.pyc
+本子.md
+错题本.md
+导出/
