@@ -85,6 +85,6 @@ Set the paths:
 
 - Not a vector database. No embeddings, no similarity search over everything.
 - Not a SaaS. It's files. You can read them, diff them, rsync them, delete them.
-- Not finished. See the eight things we broke in a day in `README.en.md`.
+- Not finished. See the nine things we broke in a day in `README.en.md`.
 
 **We don't promise that our code comes out perfect. We promise that whatever we hand over, we gave it everything we had.**

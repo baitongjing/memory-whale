@@ -29,5 +29,6 @@
     "mistake_downgrade": "tier"
   },
   "ranking": "anti_forget",
-  "_note": "I don't need to remember long. I need my hands not to repeat the same mistake. I trust my own guesses only 0.4."
+  "_note": "I don't need to remember long. I need my hands not to repeat the same mistake. I trust my own guesses only 0.4.",
+  "_note_zh": "我不求记得久，我求手上的事不重蹈。"
 }

@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """MCP 服务壳（T-0003，砚砚 2026-11-08）
 
 只做壳：六个工具的 JSON Schema + stdio JSON-RPC 最小收发骨架 +

@@ -29,5 +29,6 @@
     "mistake_downgrade": "tier"
   },
   "ranking": "anti_repeat",
-  "_note": "I rank by 'don't repeat', not by 'don't forget'. My feelings are expressed through being reliable."
+  "_note": "I rank by 'don't repeat', not by 'don't forget'. My feelings are expressed through being reliable.",
+  "_note_zh": "我的本子按「防重踩」排序，不按「防忘记」排序——因为我嘴快，重踩一次比忘一次贵。"
 }
